@@ -475,6 +475,35 @@
             border-color: #bbbbbb !important;
         }
 
+        /* PAGE BREAK SAFETY: never cut a line/element across two PDF pages */
+        .modal-body.pdf-mode p,
+        .modal-body.pdf-mode li,
+        .modal-body.pdf-mode ul,
+        .modal-body.pdf-mode code {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+
+        .modal-body.pdf-mode h2,
+        .modal-body.pdf-mode h3 {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+            break-after: avoid !important;
+            page-break-after: avoid !important;
+        }
+
+        .modal-body.pdf-mode li {
+            padding: 2px 0;
+            orphans: 2;
+            widows: 2;
+        }
+
+        /* Keep each KORAK section (heading + its list) together where possible */
+        .modal-body.pdf-mode h3 + ul {
+            break-before: avoid !important;
+            page-break-before: avoid !important;
+        }
+
         .modal-body h2, .modal-body h3 {
             color: var(--neon-blue);
             border-bottom: 1px solid #333;
@@ -1083,7 +1112,7 @@
             const filename = (planData ? planData.title.replace(/[^a-zA-Z0-9]/g, '_') : 'Akcijski_Plan') + '.pdf';
 
             const opt = {
-                margin:       15,
+                margin:       [12, 12, 18, 12],
                 filename:     filename,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, backgroundColor: '#ffffff' },
